@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1alpha1 
+kind: Service
+metadata:
+  name: app 
+  namespace: default
+spec:
+  template:
+    metadata:
+      name: app-0001
+    spec:
+      containers:
+        - image: docker.io/edfrancell/knative-demo:v1
+          env:
+            - name: TARGET
+              value: "#TalkNLabs - v1 - Bem vindo :-)"

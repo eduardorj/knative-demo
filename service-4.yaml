@@ -1,0 +1,30 @@
+apiVersion: serving.knative.dev/v1alpha1 
+kind: Service
+metadata:
+  name: app 
+  namespace: default
+spec:
+  template:
+    metadata:
+      name: app-0004
+      annotations:
+        autoscaling.knative.dev/metric: concurrency
+        autoscaling.knative.dev/target: "10"
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      containers:
+        - image: docker.io/edfrancell/knative-demo:v1 
+          env:
+            - name: TARGET
+              value: "#TalkNLabs - v4 - Bem vindo :-)"
+  traffic:
+  - tag: current
+    revisionName: app-0002
+    percent: 50
+  - tag: candidate
+    revisionName: app-0004
+    percent: 50 
+  - tag: v1
+    latestRevision: true
+    percent: 0
